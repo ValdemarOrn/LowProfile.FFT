@@ -9,6 +9,6 @@ This repository contains code for performing the Fast Fourier Transform (FFT). T
 * Simple unit test harness.
 * Simple performance test harness.
 
-The code can be freely used and is public domain. You are free to use this code in any way you want, but I take make no guarantees about its safety, correctness or fitness for a specific task. Use at your own risk.
+The code can be freely used and is public domain.
 
 **Note that the KissFFT code is NOT public domain, it is licensed under the BSD license.**
