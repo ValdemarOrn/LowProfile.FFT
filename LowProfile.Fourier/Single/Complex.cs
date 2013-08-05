@@ -7,7 +7,7 @@ using System.Text;
 namespace LowProfile.Fourier.Single
 {
 	[StructLayoutAttribute(LayoutKind.Sequential, Pack = 1)]
-	public struct Complex
+	public unsafe struct Complex
 	{
 		public float Real;
 		public float Imag;
@@ -102,6 +102,48 @@ namespace LowProfile.Fourier.Single
 			var x = Math.Cos(phase);
 			var y = Math.Sin(phase);
 			return new Complex((float)x, (float)y);
+		}
+
+		// ------------- fast operations -------------
+
+		public static void Multiply(ref Complex dest, ref Complex c1, ref Complex c2)
+		{
+			var r = c1.Real * c2.Real - c1.Imag * c2.Imag;
+			var i = c1.Real * c2.Imag + c1.Imag * c2.Real;
+			dest.Real = r;
+			dest.Imag = i;
+		}
+
+		public static void Add(ref Complex dest, ref Complex c1, ref Complex c2)
+		{
+			dest.Real = c1.Real + c2.Real;
+			dest.Imag = c1.Imag + c2.Imag;
+		}
+
+		public static void Subtract(ref Complex dest, ref Complex c1, ref Complex c2)
+		{
+			dest.Real = c1.Real - c2.Real;
+			dest.Imag = c1.Imag - c2.Imag;
+		}
+
+
+		public static void Multiply(ref Complex dest, ref Complex c1)
+		{
+			var r = dest.Real * c1.Real - dest.Imag * c1.Imag;
+			dest.Imag = dest.Real * c1.Imag + dest.Imag * c1.Real;
+			dest.Real = r;
+		}
+
+		public static void Add(ref Complex dest, ref Complex c1)
+		{
+			dest.Real += c1.Real;
+			dest.Imag += c1.Imag;
+		}
+
+		public static void Subtract(ref Complex dest, ref Complex c1)
+		{
+			dest.Real -= c1.Real;
+			dest.Imag -= c1.Imag;
 		}
 	}
 }

@@ -10,9 +10,14 @@ namespace LowProfile.Fourier
 	public class Tests
 	{
 		TransformNative FFTn;
+		Transform FFTm;
+
 		Complex[] input;
-		Complex[] fft;
-		Complex[] ifft;
+		Complex[] fftn;
+		Complex[] ifftn;
+
+		Complex[] fftm;
+		Complex[] ifftm;
 
 		double[] inputReal;
 		double[] outputReal;
@@ -21,187 +26,161 @@ namespace LowProfile.Fourier
 		private void Setup()
 		{
 			int len = input.Length;
-			FFTn = new Single.TransformNative(len);
-			fft = new Single.Complex[len];
-			ifft = new Single.Complex[len];
-			
+			FFTn = new TransformNative(len);
+			FFTm = new Transform(len);
+
+			fftn = new Complex[len];
+			ifftn = new Complex[len];
+
+			fftm = new Complex[len];
+			ifftm = new Complex[len];
 
 			inputReal = input.Select(x => (double)x.Real).ToArray();
 			outputReal = new double[len];
 			outputImag = new double[len];
 		}
 
-		public void TestSingle()
+		private void RunTest()
 		{
-			input = new Complex[] { 42 };
 			Setup();
 
 			SimpleDFT.DFT(inputReal, outputReal, outputImag);
-			FFTn.FFT(input, fft);
-			FFTn.IFFT(fft, ifft);
+			FFTn.FFT(input, fftn);
+			FFTn.IFFT(fftn, ifftn);
 
-			CompareFFT();
-			CompareIFFT();
+			FFTm.FFT(input, fftm);
+			FFTm.IFFT(fftm, ifftm);
+
+			CompareFFTn();
+			CompareIFFTn();
+			CompareFFTm();
+			CompareIFFTm();
+		}
+
+		public void TestSingle()
+		{
+			input = new Complex[] { 42 };
+			RunTest();
 		}
 
 		public void TestDouble()
 		{
 			input = new Complex[] { 12, 99 };
-			Setup();
-
-			SimpleDFT.DFT(inputReal, outputReal, outputImag);
-			FFTn.FFT(input, fft);
-			FFTn.IFFT(fft, ifft);
-
-			CompareFFT();
-			CompareIFFT();
+			RunTest();
 		}
 
 		public void TestStep8()
 		{
 			input = new Complex[] { 1, 1, 1, 1, 0, 0, 0, 0 };
-			Setup();
-
-			SimpleDFT.DFT(inputReal, outputReal, outputImag);
-			FFTn.FFT(input, fft);
-			FFTn.IFFT(fft, ifft);
-
-			CompareFFT();
-			CompareIFFT();
+			RunTest();
 		}
 
 		public void TestRamp4()
 		{
 			input = MakeInputRamp(4);
-			Setup();
-			SimpleDFT.DFT(inputReal, outputReal, outputImag);
-			FFTn.FFT(input, fft);
-			FFTn.IFFT(fft, ifft);
-			CompareFFT();
-			CompareIFFT();
+			RunTest();
 		}
 
 		public void TestRamp8()
 		{
 			input = MakeInputRamp(8);
-			Setup();
-			SimpleDFT.DFT(inputReal, outputReal, outputImag);
-			FFTn.FFT(input, fft);
-			FFTn.IFFT(fft, ifft);
-			CompareFFT();
-			CompareIFFT();
+			RunTest();
 		}
 
 		public void TestRamp16()
 		{
 			input = MakeInputRamp(16);
-			Setup();
-			SimpleDFT.DFT(inputReal, outputReal, outputImag);
-			FFTn.FFT(input, fft);
-			FFTn.IFFT(fft, ifft);
-			CompareFFT();
-			CompareIFFT();
+			RunTest();
 		}
 
 		public void TestRamp32()
 		{
 			input = MakeInputRamp(32);
-			Setup();
-			SimpleDFT.DFT(inputReal, outputReal, outputImag);
-			FFTn.FFT(input, fft);
-			FFTn.IFFT(fft, ifft);
-			CompareFFT();
-			CompareIFFT();
+			RunTest();
 		}
 
 		public void TestRamp1024()
 		{
 			input = MakeInputRamp(1024);
-			Setup();
-			SimpleDFT.DFT(inputReal, outputReal, outputImag);
-			FFTn.FFT(input, fft);
-			FFTn.IFFT(fft, ifft);
-			CompareFFT();
-			CompareIFFT();
+			RunTest();
 		}
 
 		public void TestNoise4()
 		{
 			input = MakeInputRandom(4);
-			Setup();
-			SimpleDFT.DFT(inputReal, outputReal, outputImag);
-			FFTn.FFT(input, fft);
-			FFTn.IFFT(fft, ifft);
-			CompareFFT();
-			CompareIFFT();
+			RunTest();
 		}
 
 		public void TestNoise8()
 		{
 			input = MakeInputRandom(8);
-			Setup();
-			SimpleDFT.DFT(inputReal, outputReal, outputImag);
-			FFTn.FFT(input, fft);
-			FFTn.IFFT(fft, ifft);
-			CompareFFT();
-			CompareIFFT();
+			RunTest();
 		}
 
 		public void TestNoise16()
 		{
 			input = MakeInputRandom(16);
-			Setup();
-			SimpleDFT.DFT(inputReal, outputReal, outputImag);
-			FFTn.FFT(input, fft);
-			FFTn.IFFT(fft, ifft);
-			CompareFFT();
-			CompareIFFT();
+			RunTest();
 		}
 
 		public void TestNoise32()
 		{
 			input = MakeInputRandom(32);
-			Setup();
-			SimpleDFT.DFT(inputReal, outputReal, outputImag);
-			FFTn.FFT(input, fft);
-			FFTn.IFFT(fft, ifft);
-			CompareFFT();
-			CompareIFFT();
+			RunTest();
 		}
 
 		public void TestNoise1024()
 		{
 			input = MakeInputRandom(1024);
-			Setup();
-			SimpleDFT.DFT(inputReal, outputReal, outputImag);
-			FFTn.FFT(input, fft);
-			FFTn.IFFT(fft, ifft);
-			CompareFFT();
-			CompareIFFT();
+			RunTest();
 		}
 
-
-		private void CompareFFT()
+		private void CompareFFTn()
 		{
-			for (int i = 0; i < ifft.Length; i++)
+			for (int i = 0; i < ifftn.Length; i++)
 			{
-				if (Math.Abs(fft[i].Real - outputReal[i]) > 0.0001)
+				if (Math.Abs(fftn[i].Real - outputReal[i]) > 0.0001)
 					throw new Exception();
 
-				if (Math.Abs(fft[i].Imag - outputImag[i]) > 0.0001)
+				if (Math.Abs(fftn[i].Imag - outputImag[i]) > 0.0001)
 					throw new Exception();
 			}
 
 		}
 
-		private void CompareIFFT()
+		private void CompareIFFTn()
 		{
-			for(int i = 0; i < ifft.Length; i++)
+			for(int i = 0; i < ifftn.Length; i++)
 			{
-				if (Math.Abs(ifft[i].Real - input[i].Real) > 0.0001)
+				if (Math.Abs(ifftn[i].Real - input[i].Real) > 0.0001)
 					throw new Exception();
 
-				if (Math.Abs(ifft[i].Imag) > 0.0001)
+				if (Math.Abs(ifftn[i].Imag) > 0.0001)
+					throw new Exception();
+			}
+		}
+
+		private void CompareFFTm()
+		{
+			for (int i = 0; i < ifftn.Length; i++)
+			{
+				if (Math.Abs(fftm[i].Real - outputReal[i]) > 0.0001)
+					throw new Exception();
+
+				if (Math.Abs(fftm[i].Imag - outputImag[i]) > 0.0001)
+					throw new Exception();
+			}
+
+		}
+
+		private void CompareIFFTm()
+		{
+			for (int i = 0; i < ifftn.Length; i++)
+			{
+				if (Math.Abs(ifftm[i].Real - input[i].Real) > 0.0001)
+					throw new Exception();
+
+				if (Math.Abs(ifftm[i].Imag) > 0.0001)
 					throw new Exception();
 			}
 		}

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using TVal = System.Single;
+
 namespace LowProfile.Fourier.Single
 {
 	unsafe class FastFFT
@@ -10,11 +12,15 @@ namespace LowProfile.Fourier.Single
 		public static void IFFT(Complex* input, Complex* output, Complex* scratchpad, int len)
 		{
 			var scale = 1.0f / len;
+			var scaleNeg = -scale;
 
-			for(int i = 0; i < len; i++)
+			TVal* scratchPtr = (TVal*)scratchpad;
+			TVal* inputPtr = (TVal*)input;
+
+			for (int i = 0; i < len * 2; i += 2)
 			{
-				scratchpad[i] = input[i] * scale;
-				scratchpad[i].Imag = -scratchpad[i].Imag;
+				scratchPtr[i] = inputPtr[i] * scale;
+				scratchPtr[i + 1] = inputPtr[i + 1] * scaleNeg;
 			}
 
 			FFT(scratchpad, output, scratchpad, len);
@@ -22,6 +28,21 @@ namespace LowProfile.Fourier.Single
 
 		public static void FFT(Complex* input, Complex* output, Complex* scratchpad, int len)
 		{
+			if(len == 1)
+			{
+				output[0] = input[0];
+				return;
+			}
+			else if(len == 2)
+			{
+				output[0] = input[0];
+				output[1] = input[0];
+
+				Complex.Add(ref output[0], ref input[1]);
+				Complex.Subtract(ref output[1], ref input[1]);
+				return;
+			}
+
 			// we use the output buffer and another buffer called scratchpad to work on the
 			// signals. Input signal never gets modified
 			Complex* A = output;
@@ -33,9 +54,11 @@ namespace LowProfile.Fourier.Single
 				A[i] = input[bitMap[i]];
 			
 			Butterfly2(A, B, len);
-
 			Swap(ref A, ref B);
 			Butterfly4(A, B, len);
+
+			if (len == 4)
+				goto end;
 
 			Swap(ref A, ref B);
 			Butterfly8(A, B, len);
@@ -52,6 +75,8 @@ namespace LowProfile.Fourier.Single
 				Swap(ref A, ref B);
 				Butterfly(A, B, butterflySize, len);
 			}
+
+end:
 
 			// copy output to the correct buffer
 			if (B != output)
@@ -75,8 +100,10 @@ namespace LowProfile.Fourier.Single
 				outp[i] = inp[i];
 				outp[i + 1] = inp[i];
 
-				outp[i] += inp[i + 1];
-				outp[i + 1] -= inp[i + 1];
+				outp[i].Real += inp[i + 1].Real;
+				outp[i].Imag += inp[i + 1].Imag;
+				outp[i + 1].Real -= inp[i + 1].Real;
+				outp[i + 1].Imag -= inp[i + 1].Imag;
 			}
 		}
 
@@ -92,14 +119,17 @@ namespace LowProfile.Fourier.Single
 				outp[i + 1] = inp[i + 1];
 				outp[i + 3] = inp[i + 1];
 
-				var x0 = inp[i + 2] * w[0];
+				var x0 = inp[i + 2];// *w[0];
 				var x1 = inp[i + 3] * w[1];
 
-				outp[i] += x0;
-				outp[i + 1] += x1;
-
-				outp[i + 2] -= x0;
-				outp[i + 3] -= x1;
+				outp[i].Real += x0.Real;
+				outp[i].Imag += x0.Imag;
+				outp[i + 1].Real += x1.Real;
+				outp[i + 1].Imag += x1.Imag;
+				outp[i + 2].Real -= x0.Real;
+				outp[i + 2].Imag -= x0.Imag;
+				outp[i + 3].Real -= x1.Real;
+				outp[i + 3].Imag -= x1.Imag;
 			}
 		}
 
@@ -119,20 +149,28 @@ namespace LowProfile.Fourier.Single
 				outp[i + 6] = inp[i + 2];
 				outp[i + 7] = inp[i + 3];
 
-				var x0 = inp[i + 4] * w[0];
+				var x0 = inp[i + 4];// *w[0];
 				var x1 = inp[i + 5] * w[1];
 				var x2 = inp[i + 6] * w[2];
 				var x3 = inp[i + 7] * w[3];
 
-				outp[i] += x0;
-				outp[i + 1] += x1;
-				outp[i + 2] += x2;
-				outp[i + 3] += x3;
+				outp[i].Real += x0.Real;
+				outp[i].Imag += x0.Imag;
+				outp[i + 1].Real += x1.Real;
+				outp[i + 1].Imag += x1.Imag;
+				outp[i + 2].Real += x2.Real;
+				outp[i + 2].Imag += x2.Imag;
+				outp[i + 3].Real += x3.Real;
+				outp[i + 3].Imag += x3.Imag;
 
-				outp[i + 4] -= x0;
-				outp[i + 5] -= x1;
-				outp[i + 6] -= x2;
-				outp[i + 7] -= x3;
+				outp[i + 4].Real -= x0.Real;
+				outp[i + 4].Imag -= x0.Imag;
+				outp[i + 5].Real -= x1.Real;
+				outp[i + 5].Imag -= x1.Imag;
+				outp[i + 6].Real -= x2.Real;
+				outp[i + 6].Imag -= x2.Imag;
+				outp[i + 7].Real -= x3.Real;
+				outp[i + 7].Imag -= x3.Imag;
 			}
 		}
 
@@ -140,6 +178,7 @@ namespace LowProfile.Fourier.Single
 		{
 			var w = TwiddleFactors.Factors[stageSize];
 			var s2 = stageSize / 2;
+			Complex x = new Complex();
 
 			for (int n = 0; n < len; n += stageSize)
 			{
@@ -148,21 +187,18 @@ namespace LowProfile.Fourier.Single
 				var outLower = &outp[n];
 				var outhigher = &outp[n + s2];
 
-				for(int i = 0; i < stageSize / 2; i++)
+				for(int i = 0; i < s2; i++)
 				{
 					outLower[i] = lower[i];
 					outhigher[i] = lower[i];
 				}
 
-				for (int i = 0; i < stageSize / 2; i++)
+				for(int i = 0; i < s2; i++)
 				{
-					upper[i] *= w[i];
-				}
+					Complex.Multiply(ref x, ref upper[i], ref w[i]);
 
-				for (int i = 0; i < stageSize / 2; i++)
-				{
-					outLower[i] += upper[i];
-					outhigher[i] -= upper[i];
+					Complex.Add(ref outLower[i], ref x);
+					Complex.Subtract(ref outhigher[i], ref x);
 				}
 			}
 		}

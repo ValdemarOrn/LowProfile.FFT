@@ -1,0 +1,7 @@
+This code is considered to be in the public domain. 
+
+You are free to use this code in any way you want, 
+but I take make no guarantees about its safety, 
+correctness or fitness for a specific task. 
+
+Use at your own risk.

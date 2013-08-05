@@ -12,9 +12,9 @@ namespace LowProfile.Fourier
 			Single.Transform.Setup();
 			Single.TransformNative.Setup();
 
-			RunUnitTests();
+			//RunUnitTests();
 			RunSpeedTests();
-			Console.ReadLine();
+			//Console.ReadLine();
 		}
 
 		private static void RunUnitTests()
@@ -40,7 +40,7 @@ namespace LowProfile.Fourier
 
 				Console.WriteLine("Unit tests completed successfully");
 			}
-			catch(Exception e)
+			catch(Exception)
 			{
 				Console.WriteLine("UNIT TESTS FAILED");
 				throw;
@@ -49,7 +49,7 @@ namespace LowProfile.Fourier
 
 		private static void RunSpeedTests()
 		{
-			Console.WriteLine("\n------------ Warmup Run ------------\n");
+			/*Console.WriteLine("\n------------ Warmup Run ------------\n");
 
 			ExocortexSpeedTest(256);
 			TransformSpeedTest(256);
@@ -63,7 +63,7 @@ namespace LowProfile.Fourier
 			ExocortexSpeedTest(512);
 			ExocortexSpeedTest(4096);
 
-			Console.WriteLine("");
+			Console.WriteLine("");*/
 
 			TransformSpeedTest(256);
 			TransformSpeedTest(512);
@@ -71,7 +71,7 @@ namespace LowProfile.Fourier
 			TransformSpeedTest(32768);
 			TransformSpeedTest(65536);
 
-			Console.WriteLine("");
+			/*Console.WriteLine("");
 
 			TransformNativeSpeedTest(256);
 			TransformNativeSpeedTest(512);
@@ -85,7 +85,7 @@ namespace LowProfile.Fourier
 			KissSpeedTest(512);
 			KissSpeedTest(4096);
 			KissSpeedTest(32768);
-			KissSpeedTest(65536);
+			KissSpeedTest(65536);*/
 		}
 
 		private static void KissSpeedTest(int bufferSize)

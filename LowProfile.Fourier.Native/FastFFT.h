@@ -118,8 +118,8 @@ void FastFFT<TVal>::Butterfly2(const Complex<TVal>* inp, Complex<TVal>* outp, co
 		outp[i] = inp[i];
 		outp[i + 1] = inp[i];
 
-		Complex<TVal>::Add(outp[i], outp[i], inp[i + 1]);
-		Complex<TVal>::Subtract(outp[i + 1], outp[i + 1], inp[i + 1]);
+		Complex<TVal>::Add(outp[i], inp[i + 1]);
+		Complex<TVal>::Subtract(outp[i + 1], inp[i + 1]);
 	}
 }
 
@@ -137,8 +137,7 @@ void FastFFT<TVal>::Butterfly4(const Complex<TVal>* inp, Complex<TVal>* outp, co
 		outp[i + 3] = inp[i + 1];
 
 		Complex<TVal> x0, x1;
-		//Complex<TVal>::Multiply(x0, inp[i + 2], w[0]);
-		x0 = inp[i + 2];
+		x0 = inp[i + 2]; //Complex<TVal>::Multiply(x0, inp[i + 2], w[0]);
 		Complex<TVal>::Multiply(x1, inp[i + 3], w[1]);
 
 		Complex<TVal>::Add(outp[i], outp[i], x0);
@@ -166,8 +165,7 @@ void FastFFT<TVal>::Butterfly8(const Complex<TVal>* inp, Complex<TVal>* outp, co
 		outp[i + 7] = inp[i + 3];
 
 		Complex<TVal> x0, x1, x2, x3;
-		//Complex<TVal>::Multiply(x0, inp[i + 4], w[0]);
-		x0 = inp[i + 4];
+		x0 = inp[i + 4]; //Complex<TVal>::Multiply(x0, inp[i + 4], w[0]);
 		Complex<TVal>::Multiply(x1, inp[i + 5], w[1]);
 		Complex<TVal>::Multiply(x2, inp[i + 6], w[2]);
 		Complex<TVal>::Multiply(x3, inp[i + 7], w[3]);
