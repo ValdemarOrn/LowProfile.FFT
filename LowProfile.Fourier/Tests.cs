@@ -31,9 +31,9 @@ namespace LowProfile.Fourier
 			outputImag = new double[len];
 		}
 
-		public void Test1()
+		public void TestSingle()
 		{
-			input = MakeInputRamp(8);
+			input = new Complex[] { 42 };
 			Setup();
 
 			SimpleDFT.DFT(inputReal, outputReal, outputImag);
@@ -43,6 +43,143 @@ namespace LowProfile.Fourier
 			CompareFFT();
 			CompareIFFT();
 		}
+
+		public void TestDouble()
+		{
+			input = new Complex[] { 12, 99 };
+			Setup();
+
+			SimpleDFT.DFT(inputReal, outputReal, outputImag);
+			FFTn.FFT(input, fft);
+			FFTn.IFFT(fft, ifft);
+
+			CompareFFT();
+			CompareIFFT();
+		}
+
+		public void TestStep8()
+		{
+			input = new Complex[] { 1, 1, 1, 1, 0, 0, 0, 0 };
+			Setup();
+
+			SimpleDFT.DFT(inputReal, outputReal, outputImag);
+			FFTn.FFT(input, fft);
+			FFTn.IFFT(fft, ifft);
+
+			CompareFFT();
+			CompareIFFT();
+		}
+
+		public void TestRamp4()
+		{
+			input = MakeInputRamp(4);
+			Setup();
+			SimpleDFT.DFT(inputReal, outputReal, outputImag);
+			FFTn.FFT(input, fft);
+			FFTn.IFFT(fft, ifft);
+			CompareFFT();
+			CompareIFFT();
+		}
+
+		public void TestRamp8()
+		{
+			input = MakeInputRamp(8);
+			Setup();
+			SimpleDFT.DFT(inputReal, outputReal, outputImag);
+			FFTn.FFT(input, fft);
+			FFTn.IFFT(fft, ifft);
+			CompareFFT();
+			CompareIFFT();
+		}
+
+		public void TestRamp16()
+		{
+			input = MakeInputRamp(16);
+			Setup();
+			SimpleDFT.DFT(inputReal, outputReal, outputImag);
+			FFTn.FFT(input, fft);
+			FFTn.IFFT(fft, ifft);
+			CompareFFT();
+			CompareIFFT();
+		}
+
+		public void TestRamp32()
+		{
+			input = MakeInputRamp(32);
+			Setup();
+			SimpleDFT.DFT(inputReal, outputReal, outputImag);
+			FFTn.FFT(input, fft);
+			FFTn.IFFT(fft, ifft);
+			CompareFFT();
+			CompareIFFT();
+		}
+
+		public void TestRamp1024()
+		{
+			input = MakeInputRamp(1024);
+			Setup();
+			SimpleDFT.DFT(inputReal, outputReal, outputImag);
+			FFTn.FFT(input, fft);
+			FFTn.IFFT(fft, ifft);
+			CompareFFT();
+			CompareIFFT();
+		}
+
+		public void TestNoise4()
+		{
+			input = MakeInputRandom(4);
+			Setup();
+			SimpleDFT.DFT(inputReal, outputReal, outputImag);
+			FFTn.FFT(input, fft);
+			FFTn.IFFT(fft, ifft);
+			CompareFFT();
+			CompareIFFT();
+		}
+
+		public void TestNoise8()
+		{
+			input = MakeInputRandom(8);
+			Setup();
+			SimpleDFT.DFT(inputReal, outputReal, outputImag);
+			FFTn.FFT(input, fft);
+			FFTn.IFFT(fft, ifft);
+			CompareFFT();
+			CompareIFFT();
+		}
+
+		public void TestNoise16()
+		{
+			input = MakeInputRandom(16);
+			Setup();
+			SimpleDFT.DFT(inputReal, outputReal, outputImag);
+			FFTn.FFT(input, fft);
+			FFTn.IFFT(fft, ifft);
+			CompareFFT();
+			CompareIFFT();
+		}
+
+		public void TestNoise32()
+		{
+			input = MakeInputRandom(32);
+			Setup();
+			SimpleDFT.DFT(inputReal, outputReal, outputImag);
+			FFTn.FFT(input, fft);
+			FFTn.IFFT(fft, ifft);
+			CompareFFT();
+			CompareIFFT();
+		}
+
+		public void TestNoise1024()
+		{
+			input = MakeInputRandom(1024);
+			Setup();
+			SimpleDFT.DFT(inputReal, outputReal, outputImag);
+			FFTn.FFT(input, fft);
+			FFTn.IFFT(fft, ifft);
+			CompareFFT();
+			CompareIFFT();
+		}
+
 
 		private void CompareFFT()
 		{
@@ -69,8 +206,6 @@ namespace LowProfile.Fourier
 			}
 		}
 
-
-
 		private Complex[] MakeInputRamp(int bufferSize)
 		{
 			var arr = new Complex[bufferSize];
@@ -82,8 +217,9 @@ namespace LowProfile.Fourier
 		private Complex[] MakeInputRandom(int bufferSize)
 		{
 			var arr = new Complex[bufferSize];
+			var rand = new Random(42);
 			for (int j = 0; j < bufferSize; j++)
-				arr[j].Real = j / (float)bufferSize;
+				arr[j].Real = (float)(rand.NextDouble() * 10.0 - 5.0);
 			return arr;
 		}
 	}

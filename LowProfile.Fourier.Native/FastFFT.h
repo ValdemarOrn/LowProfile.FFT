@@ -8,8 +8,8 @@ template <class TVal>
 class FastFFT
 {
 public:
-	static void IFFT(Complex<TVal>* input, Complex<TVal>* output, Complex<TVal>* scratchpad, const int len);
-	static void FFT(Complex<TVal>* input, Complex<TVal>* output, Complex<TVal>* scratchpad, const int len);
+	static void IFFT(const Complex<TVal>* input, Complex<TVal>* output, Complex<TVal>* scratchpad, const int len);
+	static void FFT(const Complex<TVal>* input, Complex<TVal>* output, Complex<TVal>* scratchpad, const int len);
 
 	static void Swap(Complex<TVal>** inp, Complex<TVal>** outp);
 	static void Butterfly2(const Complex<TVal>* inp, Complex<TVal>* outp, const int len);
@@ -24,7 +24,7 @@ public:
 #include "TwiddleFactors.h"
 
 template <class TVal>
-void FastFFT<TVal>::IFFT(Complex<TVal>* input, Complex<TVal>* output, Complex<TVal>* scratchpad, const int len)
+void FastFFT<TVal>::IFFT(const Complex<TVal>* input, Complex<TVal>* output, Complex<TVal>* scratchpad, const int len)
 {
 	TVal scale = (TVal)(1.0 / len);
 	TVal scaleNeg = -scale;
@@ -42,8 +42,23 @@ void FastFFT<TVal>::IFFT(Complex<TVal>* input, Complex<TVal>* output, Complex<TV
 }
 
 template <class TVal>
-void FastFFT<TVal>::FFT(Complex<TVal>* input, Complex<TVal>* output, Complex<TVal>* scratchpad, const int len)
+void FastFFT<TVal>::FFT(const Complex<TVal>* input, Complex<TVal>* output, Complex<TVal>* scratchpad, const int len)
 {
+	if(len == 1)
+	{
+		output[0] = input[0];
+		return;
+	}
+	else if(len == 2)
+	{
+		output[0] = input[0];
+		output[1] = input[0];
+
+		Complex<TVal>::Add(output[0], input[1]);
+		Complex<TVal>::Subtract(output[1], input[1]);
+		return;
+	}
+
 	// we use the output buffer and another buffer called scratchpad to work on the
 	// signals. Input signal never gets modified
 	Complex<TVal>* A = output;
@@ -55,7 +70,6 @@ void FastFFT<TVal>::FFT(Complex<TVal>* input, Complex<TVal>* output, Complex<TVa
 		A[i] = input[bitMap[i]];
 			
 	Butterfly2(A, B, len);
-
 	Swap(&A, &B);
 	Butterfly4(A, B, len);
 

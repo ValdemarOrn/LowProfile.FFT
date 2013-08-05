@@ -12,30 +12,53 @@ namespace LowProfile.Fourier
 			Single.Transform.Setup();
 			Single.TransformNative.Setup();
 
-			var t = new Tests();
-			t.Test1();
-			return;
-
-			/*var input = new Single.Complex[] { 1, 1, 1, 1, 0, 0, 0, 0 };
-			var output = new Single.Complex[8];
-			var ifft = new Single.Complex[8];
-			var fft = new Single.TransformNative(8);
-			fft.FFT(input, output);
-			fft.IFFT(output, ifft);*/
-
-			//ExocortexSpeedTest(256);
-			//TransformSpeedTest(256);
-			TransformNativeSpeedTest(256);
-			KissSpeedTest(256);
-
+			RunUnitTests();
 			RunSpeedTests();
 			Console.ReadLine();
 		}
 
+		private static void RunUnitTests()
+		{
+			try
+			{
+				var t = new Tests();
+				t.TestSingle();
+				t.TestDouble();
+				t.TestStep8();
+
+				t.TestRamp4();
+				t.TestRamp8();
+				t.TestRamp16();
+				t.TestRamp32();
+				t.TestRamp1024();
+
+				t.TestNoise4();
+				t.TestNoise8();
+				t.TestNoise16();
+				t.TestNoise32();
+				t.TestNoise1024();
+
+				Console.WriteLine("Unit tests completed successfully");
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine("UNIT TESTS FAILED");
+				throw;
+			}
+		}
+
 		private static void RunSpeedTests()
 		{
+			Console.WriteLine("\n------------ Warmup Run ------------\n");
+
+			ExocortexSpeedTest(256);
+			TransformSpeedTest(256);
+			TransformNativeSpeedTest(256);
+			KissSpeedTest(256);
+
+
 			Console.WriteLine("\n------------ Starting tests ------------\n");
-/*
+
 			ExocortexSpeedTest(256);
 			ExocortexSpeedTest(512);
 			ExocortexSpeedTest(4096);
@@ -48,7 +71,7 @@ namespace LowProfile.Fourier
 			TransformSpeedTest(32768);
 			TransformSpeedTest(65536);
 
-			Console.WriteLine("");*/
+			Console.WriteLine("");
 
 			TransformNativeSpeedTest(256);
 			TransformNativeSpeedTest(512);
