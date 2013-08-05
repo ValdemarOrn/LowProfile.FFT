@@ -92,8 +92,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
-cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
+      <Command>copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
+copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -106,8 +106,8 @@ cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(Targe
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
-cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
+      <Command>copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
+copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -128,8 +128,8 @@ cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(Targe
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
-cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
+      <Command>copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
+copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -148,8 +148,8 @@ cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(Targe
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
-cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
+      <Command>copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
+copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

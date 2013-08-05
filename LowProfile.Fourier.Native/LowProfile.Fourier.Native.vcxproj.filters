@@ -38,5 +38,8 @@
     <ClCompile Include="Exports.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Profile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

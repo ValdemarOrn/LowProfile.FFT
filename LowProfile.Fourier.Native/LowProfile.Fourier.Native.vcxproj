@@ -93,8 +93,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
-cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
+      <Command>copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
+copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -106,10 +106,12 @@ cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(Targe
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
     </Link>
     <PostBuildEvent>
-      <Command>cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
-cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
+      <Command>copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
+copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -122,18 +124,20 @@ cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(Targe
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <OmitFramePointers>true</OmitFramePointers>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PostBuildEvent>
-      <Command>cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
-cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
+      <Command>copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
+copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -146,18 +150,20 @@ cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(Targe
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <OmitFramePointers>true</OmitFramePointers>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PostBuildEvent>
-      <Command>cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
-cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
+      <Command>copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Debug\$(TargetFileName)
+copy $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(TargetFileName)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -170,6 +176,7 @@ cp $(RunCodeAnalysisInputs) $(SolutionDir)LowProfile.Fourier\bin\Release\$(Targe
   <ItemGroup>
     <ClCompile Include="BitReverse.cpp" />
     <ClCompile Include="Exports.cpp" />
+    <ClCompile Include="Profile.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
