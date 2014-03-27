@@ -7,7 +7,7 @@ namespace LowProfile.Fourier.Double
 {
 	public class Transform
 	{
-		public static void Setup()
+		static Transform()
 		{
 			BitReverse.Setup();
 			TwiddleFactors.Setup();
