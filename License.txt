@@ -1,4 +1,4 @@
-This code is considered to be in the public domain. 
+This code is considered to be in the public domain, exempting code from KissFFT (see license)
 
 You are free to use this code in any way you want, 
 but I make no guarantees about its safety, 

@@ -122,46 +122,6 @@ namespace LowProfile.Fourier
 			Console.WriteLine("KISS; IFFT; {0}; {1}; {2}", bufferSize, count, sum);
 		}
 
-		static void ExocortexSpeedTest(int bufferSize)
-		{
-			var input = MakeData(bufferSize);
-			var inputExo = new Exocortex.DSP.ComplexF[bufferSize];
-			for(int i = 0; i < inputExo.Length; i++)
-			{
-				inputExo[i].Re = input[i].Real;
-				inputExo[i].Im = input[i].Imag;
-			}
-			var temp = new Exocortex.DSP.ComplexF[bufferSize];
-
-			double sum = 0;
-			long count = 0;
-			var start = DateTime.Now;
-			while ((DateTime.Now - start).TotalMilliseconds < 1000)
-			{
-				Array.Copy(inputExo, temp, inputExo.Length);
-				Exocortex.DSP.Fourier.FFT(temp, Exocortex.DSP.FourierDirection.Forward);
-				sum += temp[0].Re;
-				count++;
-			}
-			sum = sum / count;
-			Console.WriteLine("Exocortex; FFT; {0}; {1}; {2}", bufferSize, count, sum);
-
-			Array.Copy(temp, inputExo, inputExo.Length);
-
-			sum = 0;
-			count = 0;
-			start = DateTime.Now;
-			while ((DateTime.Now - start).TotalMilliseconds < 1000)
-			{
-				Array.Copy(inputExo, temp, inputExo.Length);
-				Exocortex.DSP.Fourier.FFT(temp, Exocortex.DSP.FourierDirection.Backward);
-				sum += temp[0].Re;
-				count++;
-			}
-			sum = sum / count;
-			Console.WriteLine("Exocortex; IFFT; {0}; {1}; {2}", bufferSize, count, sum);
-		}
-
 		static void TransformSpeedTest(int bufferSize)
 		{
 			var input = MakeData(bufferSize);
