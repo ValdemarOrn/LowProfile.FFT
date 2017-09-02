@@ -5,9 +5,9 @@ using System.Text;
 
 namespace LowProfile.Fourier
 {
-	class Program
+	public class Program
 	{
-		unsafe static void Main(string[] args)
+		public unsafe static void Main(string[] args)
 		{
 			Single.Transform.Setup();
 			Single.TransformNative.Setup();
@@ -37,6 +37,8 @@ namespace LowProfile.Fourier
 				t.TestNoise16();
 				t.TestNoise32();
 				t.TestNoise1024();
+
+                t.TestComplexArg();
 
 				Console.WriteLine("Unit tests completed successfully");
 			}

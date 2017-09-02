@@ -135,6 +135,26 @@ namespace LowProfile.Fourier
 			RunTest();
 		}
 
+        public void TestComplexArg()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                var phase = Math.PI * 2 * i / 100.0;
+                var complex = Double.Complex.CExp(phase);
+                var argBefore = complex.Arg;
+                complex.Arg = complex.Arg;
+                var argAfter = complex.Arg;
+
+                if (Math.Abs(argBefore - argAfter) > 0.00001)
+                    throw new Exception();
+
+                var pp = (phase <= Math.PI) ? phase : phase - Math.PI * 2;
+
+                if (Math.Abs(argBefore - pp) > 0.00001)
+                    throw new Exception();
+            }
+        }
+
 		private void CompareFFTn()
 		{
 			for (int i = 0; i < ifftn.Length; i++)
@@ -201,5 +221,7 @@ namespace LowProfile.Fourier
 				arr[j].Real = (float)(rand.NextDouble() * 10.0 - 5.0);
 			return arr;
 		}
+
+
 	}
 }

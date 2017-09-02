@@ -18,7 +18,56 @@ namespace LowProfile.Fourier.Double
 			Imag = imag;
 		}
 
-		public static Complex operator -(Complex c1)
+		public double Abs
+		{
+			get { return Math.Sqrt(Real * Real + Imag * Imag); }
+            set
+            {
+                var scaler = value / Abs;
+                Real *= scaler;
+                Imag *= scaler;
+            }
+		}
+
+        public double Arg
+        {
+            get
+            {
+                var x = Real;
+                var y = Imag;
+                if (x > 0) return Math.Atan(y / x);
+                if (y > 0) return Math.PI / 2 - Math.Atan(x / y);
+                if (y < 0) return -Math.PI / 2 - Math.Atan(x / y);
+                if (x < 0) return Math.Atan(y / x) + Math.PI;
+	            if (x == 0 && y == 0) return 0.0;
+                return double.NaN;
+            }
+            set
+            {
+                var ce = CExp(value);
+                Real = Abs;
+                Imag = 0;
+                Multiply(ref this, ref ce);
+            }
+        }
+
+        public override string ToString()
+        {
+            var r = Real;
+            var i = Imag;
+            if (Math.Abs(r) % 1.0 < 0.000000000001)
+                r = (float)Math.Round(r);
+            if (Math.Abs(i) % 1.0 < 0.000000000001)
+                i = (float)Math.Round(i);
+
+            if (i == 0)
+                return r.ToString();
+            else
+                return "(" + r + ", " + i + ")";
+        }
+
+
+        public static Complex operator -(Complex c1)
 		{
 			return new Complex(-c1.Real, -c1.Imag);
 		}
@@ -79,22 +128,7 @@ namespace LowProfile.Fourier.Double
 		{
 			return new Complex(rhs, 0);
 		}
-
-		public override string ToString()
-		{
-			var r = Real;
-			var i = Imag;
-			if (Math.Abs(r) % 1.0 < 0.000000000001)
-				r = (float)Math.Round(r);
-			if (Math.Abs(i) % 1.0 < 0.000000000001)
-				i = (float)Math.Round(i);
-
-			if (i == 0)
-				return r.ToString();
-			else
-				return "(" + r + ", " + i + ")";
-		}
-
+        
 		public static Complex I = new Complex(0, 1);
 
 		public static Complex CExp(double phase)

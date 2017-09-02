@@ -25,6 +25,7 @@ Thumbs.db
 test-results/
 *.lib
 *.sbr
+.vs*/
 obj/
 intermediate*/
 [Rr]elease*/
